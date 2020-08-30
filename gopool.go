@@ -30,6 +30,20 @@ func (p *Pool) Do(job func()) {
 	p.jobs <- job
 }
 
+func (p *Pool) SetLimit(limit int) {
+	if limit <= 0 {
+		limit = defaultLimit
+	}
+	for i := p.limit; i < limit; i++ {
+		p.wg.Add(1)
+		go p.do()
+	}
+	for i := limit; i < p.limit; i++ {
+		p.Do(nil)
+	}
+	p.limit = limit
+}
+
 func (p *Pool) Done() {
 	for i := 0; i < p.limit; i++ {
 		p.Do(nil)
