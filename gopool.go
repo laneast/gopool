@@ -27,6 +27,9 @@ func New(limit int) *Pool {
 }
 
 func (p *Pool) Do(job func()) {
+	if p.limit <= 0 {
+		return
+	}
 	p.jobs <- job
 }
 
