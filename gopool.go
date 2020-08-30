@@ -50,6 +50,7 @@ func (p *Pool) Done() {
 	}
 	p.limit = 0
 	p.wg.Wait()
+	close(p.jobs)
 }
 
 func (p *Pool) do() {
