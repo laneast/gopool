@@ -48,6 +48,9 @@ func (p *Pool) SetLimit(limit int) {
 }
 
 func (p *Pool) Done() {
+	if (p.limit <= 0) {
+		return
+	}
 	for i := 0; i < p.limit; i++ {
 		p.Do(nil)
 	}
